@@ -14,6 +14,8 @@
 		ED3375E921235F290038FB26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED3375E721235F290038FB26 /* LaunchScreen.storyboard */; };
 		ED3375F121235F410038FB26 /* Delm-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED3375F021235F400038FB26 /* Delm-Medium.otf */; };
 		ED3375F321235F500038FB26 /* ThirstySoftRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = ED3375F221235F500038FB26 /* ThirstySoftRegular.otf */; };
+		ED3622472154E23800F744C8 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3622462154E23800F744C8 /* UIView.swift */; };
+		ED3A86C8214BEFB9003C0327 /* UIImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3A86C7214BEFB9003C0327 /* UIImagePickerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		ED3375EA21235F290038FB26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED3375F021235F400038FB26 /* Delm-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Delm-Medium.otf"; sourceTree = "<group>"; };
 		ED3375F221235F500038FB26 /* ThirstySoftRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = ThirstySoftRegular.otf; sourceTree = "<group>"; };
+		ED3622462154E23800F744C8 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		ED3A86C7214BEFB9003C0327 /* UIImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImagePickerController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,7 @@
 		ED3375DD21235F280038FB26 /* Instagrid */ = {
 			isa = PBXGroup;
 			children = (
+				ED3A86C6214BEF2A003C0327 /* Extensions */,
 				EDB943BC2136D6B50030E180 /* Model */,
 				EDB943BE2136D6C30030E180 /* View */,
 				EDB943BD2136D6BC0030E180 /* Controller */,
@@ -65,6 +70,15 @@
 				ED3375EA21235F290038FB26 /* Info.plist */,
 			);
 			path = Instagrid;
+			sourceTree = "<group>";
+		};
+		ED3A86C6214BEF2A003C0327 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				ED3A86C7214BEFB9003C0327 /* UIImagePickerController.swift */,
+				ED3622462154E23800F744C8 /* UIView.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		EDB943BC2136D6B50030E180 /* Model */ = {
@@ -175,8 +189,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED3622472154E23800F744C8 /* UIView.swift in Sources */,
 				ED3375E121235F280038FB26 /* ViewController.swift in Sources */,
 				ED3375DF21235F280038FB26 /* AppDelegate.swift in Sources */,
+				ED3A86C8214BEFB9003C0327 /* UIImagePickerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +335,6 @@
 		ED3375EE21235F290038FB26 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Instagrid/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -336,7 +351,6 @@
 		ED3375EF21235F290038FB26 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Instagrid/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
