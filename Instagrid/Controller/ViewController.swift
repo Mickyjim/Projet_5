@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
+    // Links between from storyboard to controller with outlets
     @IBOutlet weak var pattern1: UIButton!
     @IBOutlet weak var pattern2: UIButton!
     @IBOutlet weak var pattern3: UIButton!
@@ -23,23 +24,41 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     let imagePickerController = UIImagePickerController()
     var tag: Int?
-    
     var swipeGesture: UISwipeGestureRecognizer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePickerController.delegate = self
+
+        setupBehaviors()
+        setupGestures()
+    }
+    // METHOD: UIGestureRecognizer
+    func setupGestures() {
+        // Resetting images with UITapGestureRecognizer
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(tapToErase))
+        doubleTap.numberOfTapsRequired = 2
+        gridView.addGestureRecognizer(doubleTap)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(setupSwipeDirection), name: .UIDeviceOrientationDidChange, object: nil)
-        
-    // Gesture Recognizer setup
+        // Gesture Recognizer setup with UISwipeGestureRecognizer
         swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         guard let swipeGesture = swipeGesture else { return }
         setupSwipeDirection()
         gridView.addGestureRecognizer(swipeGesture)
         
+        // Notification setup with NotificationCenter
+        NotificationCenter.default.addObserver(self, selector: #selector(setupSwipeDirection), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
-   
+    
+    func setupBehaviors() {
+        imagePickerController.delegate = self
+        topRightButton.isHidden = false
+        bottomRightButton.isHidden = true
+    }
+    
+   @objc func tapToErase() {
+        [topLeftButton, topRightButton, bottomLeftButton, bottomRightButton].forEach {$0?.setImage(UIImage(named: "Combined Shape"), for: .normal)}
+    }
+    
     // Device orientation setup
    @objc func setupSwipeDirection() {
         if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
@@ -68,6 +87,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
+    // Grid animation returning to initial position
     func animationGridViewInitialPosition(duration: Double){
         UIView.animate(withDuration: duration, animations: {
             self.gridView.transform = .identity })
@@ -88,7 +108,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
-    
     // Setting up the patterns
     @IBAction func patternButtonTapped(_ sender: UIButton) {
         [pattern1, pattern2, pattern3].forEach { $0?.isSelected = false }
@@ -99,6 +118,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         case 0:
             topRightButton.isHidden = true
             bottomRightButton.isHidden = false
+            
         // Middle button selection
         case 1:
             topRightButton.isHidden = false
@@ -117,13 +137,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     // Choosing an image to the selected frame
     @IBAction func chooseImage(_ sender: UIButton) {
         tag = sender.tag
-        imagePickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePickerController.sourceType = UIImagePickerController.SourceType.photoLibrary
         present(imagePickerController, animated: true)
-        
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        guard let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
+    // Image picker setup for selection of chosen images
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
+        guard let selectedImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else { return }
         guard let tag = tag else { return }
         let buttons = [topLeftButton, topRightButton, bottomLeftButton, bottomRightButton]
         buttons[tag]?.setImage(selectedImage, for: .normal)
@@ -132,7 +155,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
         dismiss(animated: true, completion: nil)
     }
-
 }
 
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
 
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
+}

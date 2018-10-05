@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIView {
+    // Method for UIView conversion to image
     func convertToUIImage() -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.isOpaque, 0.0)
         self.drawHierarchy(in: self.bounds, afterScreenUpdates: true)
