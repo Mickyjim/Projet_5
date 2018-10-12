@@ -8,8 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class ViewController: UIViewController {
 
+    // MARK: - Outlets
     // Links between from storyboard to controller with outlets
     @IBOutlet weak var pattern1: UIButton!
     @IBOutlet weak var pattern2: UIButton!
@@ -22,18 +23,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     
     @IBOutlet weak var gridView: UIView!
     
-    let imagePickerController = UIImagePickerController()
-    var tag: Int?
-    var swipeGesture: UISwipeGestureRecognizer?
+    // MARK: - Variables
+    private let imagePickerController = UIImagePickerController()
+    private var tag: Int?
+    private var swipeGesture: UISwipeGestureRecognizer?
     
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupBehaviors()
         setupGestures()
     }
+    
+    // MARK: - Class methods
     // METHOD: UIGestureRecognizer
-    func setupGestures() {
+    private func setupGestures() {
         // Resetting images with UITapGestureRecognizer
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(tapToErase))
         doubleTap.numberOfTapsRequired = 2
@@ -49,18 +54,18 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         NotificationCenter.default.addObserver(self, selector: #selector(setupSwipeDirection), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
-    func setupBehaviors() {
+    private func setupBehaviors() {
         imagePickerController.delegate = self
         topRightButton.isHidden = false
         bottomRightButton.isHidden = true
     }
     
-   @objc func tapToErase() {
+   @objc private func tapToErase() {
         [topLeftButton, topRightButton, bottomLeftButton, bottomRightButton].forEach {$0?.setImage(UIImage(named: "Combined Shape"), for: .normal)}
     }
     
     // Device orientation setup
-   @objc func setupSwipeDirection() {
+   @objc private func setupSwipeDirection() {
         if UIDevice.current.orientation == .landscapeLeft || UIDevice.current.orientation == .landscapeRight {
            swipeGesture?.direction = .left
         } else {
@@ -69,7 +74,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Sharing content with multiple plateforms
-    func sharingGridContent() {
+    private func sharingGridContent() {
         guard let image = gridView.convertToUIImage() else { return }
         let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         present(activityViewController, animated: true, completion: nil)
@@ -79,7 +84,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Grid animation
-    func animationGridView(duration: Double,x: CGFloat, y: CGFloat, onSuccess: @escaping () -> Void){
+    private func animationGridView(duration: Double,x: CGFloat, y: CGFloat, onSuccess: @escaping () -> Void){
         UIView.animate(withDuration: duration, animations: {
             self.gridView.transform = CGAffineTransform(translationX: x, y: y)
         }) { _ in
@@ -88,12 +93,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
     }
     
     // Grid animation returning to initial position
-    func animationGridViewInitialPosition(duration: Double){
+    private func animationGridViewInitialPosition(duration: Double){
         UIView.animate(withDuration: duration, animations: {
             self.gridView.transform = .identity })
     }
     
-    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+    @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
         
     // Ternary Operator
         //gesture.direction == .up ? print("Up") : print("Left")
@@ -108,6 +113,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         }
     }
     
+    // MARK: - Actions
     // Setting up the patterns
     @IBAction func patternButtonTapped(_ sender: UIButton) {
         [pattern1, pattern2, pattern3].forEach { $0?.isSelected = false }
@@ -140,29 +146,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, UIImageP
         imagePickerController.sourceType = UIImagePickerController.SourceType.photoLibrary
         present(imagePickerController, animated: true)
     }
+}
+
+// MARK: - UIImagePickerController
+extension ViewController : UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     // Image picker setup for selection of chosen images
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-
-        guard let selectedImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage else { return }
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
         guard let tag = tag else { return }
         let buttons = [topLeftButton, topRightButton, bottomLeftButton, bottomRightButton]
         buttons[tag]?.setImage(selectedImage, for: .normal)
         buttons[tag]?.imageView?.contentMode = .scaleAspectFill
         buttons[tag]?.imageView?.clipsToBounds = true
-    
+        
         dismiss(animated: true, completion: nil)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
-	return input.rawValue
 }

@@ -63,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				ED3A86C6214BEF2A003C0327 /* Extensions */,
-				EDB943BC2136D6B50030E180 /* Model */,
 				EDB943BE2136D6C30030E180 /* View */,
 				EDB943BD2136D6BC0030E180 /* Controller */,
 				EDB943BF2136D6CF0030E180 /* Supporting Files */,
@@ -79,13 +78,6 @@
 				ED3622462154E23800F744C8 /* UIView.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		EDB943BC2136D6B50030E180 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		EDB943BD2136D6BC0030E180 /* Controller */ = {
